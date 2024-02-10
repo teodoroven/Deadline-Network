@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/vlad/Programs/Programs/Git/Deadline-Network/DeadlineNetwork/DeadlineNetwork.csproj": {}
+    "/home/vlad/Programs/Programs/Git/Deadline-Network/DeadlineNetwork/Server/Server.csproj": {}
   },
   "projects": {
-    "/home/vlad/Programs/Programs/Git/Deadline-Network/DeadlineNetwork/DeadlineNetwork.csproj": {
+    "/home/vlad/Programs/Programs/Git/Deadline-Network/DeadlineNetwork/Server/Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/vlad/Programs/Programs/Git/Deadline-Network/DeadlineNetwork/DeadlineNetwork.csproj",
-        "projectName": "DeadlineNetwork",
-        "projectPath": "/home/vlad/Programs/Programs/Git/Deadline-Network/DeadlineNetwork/DeadlineNetwork.csproj",
+        "projectUniqueName": "/home/vlad/Programs/Programs/Git/Deadline-Network/DeadlineNetwork/Server/Server.csproj",
+        "projectName": "Server",
+        "projectPath": "/home/vlad/Programs/Programs/Git/Deadline-Network/DeadlineNetwork/Server/Server.csproj",
         "packagesPath": "/home/vlad/.nuget/packages/",
-        "outputPath": "/home/vlad/Programs/Programs/Git/Deadline-Network/DeadlineNetwork/obj/",
+        "outputPath": "/home/vlad/Programs/Programs/Git/Deadline-Network/DeadlineNetwork/Server/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/vlad/.nuget/NuGet/NuGet.Config"
@@ -38,13 +38,35 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Microsoft.AspNetCore.OpenApi": {
+            "HT.Encrypt": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[7.0.2, )"
+            },
+            "Laraue.EfCoreTriggers.PostgreSql": {
+              "target": "Package",
+              "version": "[7.1.1, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.10, )"
+            },
+            "Microsoft.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[7.0.1, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.4, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.4.0, )"
+              "version": "[6.5.0, )"
             }
           },
           "imports": [

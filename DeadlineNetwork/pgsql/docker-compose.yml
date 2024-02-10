@@ -1,0 +1,25 @@
+version: "3"
+#con_str : "User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=postgres;Pooling=true;Connection Lifetime=0;"
+services:
+  postgres:
+    container_name: database
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_vlad22
+    volumes:
+       - postgres:/data/postgres
+       - ./init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+    ports:
+      - "5433:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+  
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+    postgres:
+    pgadmin:
