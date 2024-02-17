@@ -14,6 +14,12 @@ public class DataAccessController : ControllerBase
         Db = db;
     }
 
+    [HttpGet(Name = "Test")]
+    [Route("abc")]
+    public JsonResult Abc()
+    {
+        return new(new{Text="abc!"});
+    }
 
     [HttpGet(Name = "Test")]
     [Route("hello")]
@@ -27,5 +33,6 @@ public class DataAccessController : ControllerBase
     public JsonResult Users(){
         return new(new{Users=Db.Users.First()});
     }
+    
 
 }
