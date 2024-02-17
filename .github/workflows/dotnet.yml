@@ -1,0 +1,45 @@
+# This is a basic workflow to build and test a dotnet application using dotnet 8.0
+
+name: dotnet-build-test
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This job builds and tests the dotnet application
+  build-test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Sets up the dotnet 8.0 environment
+      - name: Setup dotnet 8.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.0.x'
+
+      # Builds the web api project
+      - name: Build web api
+        run: dotnet build Server/Server.sln --configuration Release
+
+      # Runs the tests project
+      - name: Run tests
+        run: dotnet test Tests/Tests.sln --configuration Release
+
+      # Fails the workflow if the build or tests fail
+      - name: Fail workflow on error
+        if: ${{ failure() }}
+        run: exit 1
