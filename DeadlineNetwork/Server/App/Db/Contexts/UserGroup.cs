@@ -9,7 +9,7 @@ public partial class UserGroup
 
     public int GroupId { get; set; }
 
-    public bool? IsOwner { get; set; }
+    public bool IsOwner { get; set; }
 
     public virtual Group Group { get; set; } = null!;
 

@@ -4,7 +4,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Server.App.Db.Contexts;
 
-public partial class ApplicationDbContext : DbContext
+public interface IApplicationDbContext{
+    DbSet<Discipline> Disciplines { get; set; }
+    DbSet<Group> Groups { get; set; }
+    DbSet<Task> Tasks { get; set; }
+    DbSet<User> Users { get; set; }
+    DbSet<UserCredential> UserCredentials { get; set; }
+    DbSet<UserGroup> UserGroups { get; set; }
+    Task<int> SaveChangesAsync();
+}
+
+public partial class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     public ApplicationDbContext()
     {
@@ -15,7 +25,7 @@ public partial class ApplicationDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Descipline> Desciplines { get; set; }
+    public virtual DbSet<Discipline> Disciplines { get; set; }
 
     public virtual DbSet<Group> Groups { get; set; }
 
@@ -27,25 +37,30 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<UserGroup> UserGroups { get; set; }
 
+    public Task<int> SaveChangesAsync()
+    {
+        return SaveChangesAsync(default);
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Descipline>(entity =>
+        modelBuilder.Entity<Discipline>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("desciplines_pkey");
+            entity.HasKey(e => e.Id).HasName("disciplines_pkey");
 
-            entity.ToTable("desciplines");
+            entity.ToTable("disciplines");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Comment).HasColumnName("comment");
+            entity.Property(e => e.Comment).HasColumnName("comment").IsRequired();
             entity.Property(e => e.GroupId)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("group_id");
-            entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name").IsRequired();
 
-            entity.HasOne(d => d.Group).WithMany(p => p.Desciplines)
+            entity.HasOne(d => d.Group).WithMany(p => p.Disciplines)
                 .HasForeignKey(d => d.GroupId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("desciplines_group_id_fkey");
+                .HasConstraintName("disciplines_group_id_fkey");
         });
 
         modelBuilder.Entity<Group>(entity =>
@@ -55,8 +70,8 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("groups");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name).HasColumnName("name");
-            entity.Property(e => e.PasswordHash).HasColumnName("password_hash");
+            entity.Property(e => e.Name).HasColumnName("name").IsRequired();
+            entity.Property(e => e.PasswordHash).HasColumnName("password_hash").IsRequired();
         });
 
         modelBuilder.Entity<Task>(entity =>
@@ -66,24 +81,24 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("tasks");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Comment).HasColumnName("comment");
+            entity.Property(e => e.Comment).HasColumnName("comment").IsRequired();
             entity.Property(e => e.Created)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("created");
+                .HasColumnName("created").IsRequired();
             entity.Property(e => e.Deadline)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("deadline");
-            entity.Property(e => e.DesciplineId)
+                .HasColumnName("deadline").IsRequired();
+            entity.Property(e => e.DisciplineId)
                 .ValueGeneratedOnAdd()
-                .HasColumnName("descipline_id");
+                .HasColumnName("discipline_id");
             entity.Property(e => e.WhoAdded)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("who_added");
 
-            entity.HasOne(d => d.Descipline).WithMany(p => p.Tasks)
-                .HasForeignKey(d => d.DesciplineId)
+            entity.HasOne(d => d.Discipline).WithMany(p => p.Tasks)
+                .HasForeignKey(d => d.DisciplineId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("tasks_descipline_id_fkey");
+                .HasConstraintName("tasks_discipline_id_fkey");
 
             entity.HasOne(d => d.WhoAddedNavigation).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.WhoAdded)
@@ -98,7 +113,9 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("users");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.Name)
+                .HasColumnName("name")
+                .IsRequired();
         });
 
         modelBuilder.Entity<UserCredential>(entity =>
@@ -110,8 +127,10 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.UserId)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("user_id");
-            entity.Property(e => e.LoginHash).HasColumnName("login_hash");
-            entity.Property(e => e.PasswordHash).HasColumnName("password_hash");
+            entity.Property(e => e.LoginHash).HasColumnName("login_hash")
+                .IsRequired();
+            entity.Property(e => e.PasswordHash).HasColumnName("password_hash")
+                .IsRequired();
 
             entity.HasOne(d => d.User).WithOne(p => p.UserCredential)
                 .HasForeignKey<UserCredential>(d => d.UserId)
@@ -122,13 +141,17 @@ public partial class ApplicationDbContext : DbContext
         modelBuilder.Entity<UserGroup>(entity =>
         {
             entity
-                .HasNoKey()
+                .HasKey(e=>new{e.UserId,e.GroupId});
+            entity
                 .ToTable("user_group");
 
             entity.Property(e => e.GroupId)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("group_id");
-            entity.Property(e => e.IsOwner).HasColumnName("is_owner");
+            entity.Property(e => e.IsOwner).HasColumnName("is_owner")
+                .IsRequired()
+                .HasDefaultValue(false);
+            
             entity.Property(e => e.UserId)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("user_id");
