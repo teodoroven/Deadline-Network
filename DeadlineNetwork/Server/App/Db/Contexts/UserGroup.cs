@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Server.App.Db.Contexts;
+namespace Server;
 
 public partial class UserGroup
 {
-    public Guid UserId { get; set; }
+    public int UserId { get; set; }
 
-    public Guid GroupId { get; set; }
+    public int GroupId { get; set; }
 
     public bool? IsOwner { get; set; }
 

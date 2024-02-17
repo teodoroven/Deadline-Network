@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Server.App.Db.Contexts;
 
-public partial class PostgresContext : DbContext
+public partial class ApplicationDbContext : DbContext
 {
-    public PostgresContext()
+    public ApplicationDbContext()
     {
     }
 
-    public PostgresContext(DbContextOptions<PostgresContext> options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
     }
@@ -27,10 +27,6 @@ public partial class PostgresContext : DbContext
 
     public virtual DbSet<UserGroup> UserGroups { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning
-        => optionsBuilder.UseNpgsql("PLACE YOUR CONNECTION STRING HERE");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Descipline>(entity =>
@@ -39,15 +35,16 @@ public partial class PostgresContext : DbContext
 
             entity.ToTable("desciplines");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Comment).HasColumnName("comment");
-            entity.Property(e => e.GroupId).HasColumnName("group_id");
+            entity.Property(e => e.GroupId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("group_id");
             entity.Property(e => e.Name).HasColumnName("name");
 
             entity.HasOne(d => d.Group).WithMany(p => p.Desciplines)
                 .HasForeignKey(d => d.GroupId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("desciplines_group_id_fkey");
         });
 
@@ -57,9 +54,7 @@ public partial class PostgresContext : DbContext
 
             entity.ToTable("groups");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.PasswordHash).HasColumnName("password_hash");
         });
@@ -70,9 +65,7 @@ public partial class PostgresContext : DbContext
 
             entity.ToTable("tasks");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Comment).HasColumnName("comment");
             entity.Property(e => e.Created)
                 .HasColumnType("timestamp without time zone")
@@ -80,15 +73,21 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.Deadline)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("deadline");
-            entity.Property(e => e.DesciplineId).HasColumnName("descipline_id");
-            entity.Property(e => e.WhoAdded).HasColumnName("who_added");
+            entity.Property(e => e.DesciplineId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("descipline_id");
+            entity.Property(e => e.WhoAdded)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("who_added");
 
             entity.HasOne(d => d.Descipline).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.DesciplineId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("tasks_descipline_id_fkey");
 
             entity.HasOne(d => d.WhoAddedNavigation).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.WhoAdded)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("tasks_who_added_fkey");
         });
 
@@ -98,9 +97,7 @@ public partial class PostgresContext : DbContext
 
             entity.ToTable("users");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name).HasColumnName("name");
         });
 
@@ -111,7 +108,7 @@ public partial class PostgresContext : DbContext
             entity.ToTable("user_credentials");
 
             entity.Property(e => e.UserId)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("user_id");
             entity.Property(e => e.LoginHash).HasColumnName("login_hash");
             entity.Property(e => e.PasswordHash).HasColumnName("password_hash");
@@ -128,9 +125,13 @@ public partial class PostgresContext : DbContext
                 .HasNoKey()
                 .ToTable("user_group");
 
-            entity.Property(e => e.GroupId).HasColumnName("group_id");
+            entity.Property(e => e.GroupId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("group_id");
             entity.Property(e => e.IsOwner).HasColumnName("is_owner");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.UserId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("user_id");
 
             entity.HasOne(d => d.Group).WithMany()
                 .HasForeignKey(d => d.GroupId)

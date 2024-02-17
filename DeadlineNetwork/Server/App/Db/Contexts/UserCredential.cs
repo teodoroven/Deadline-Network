@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Server.App.Db.Contexts;
+namespace Server;
 
 public partial class UserCredential
 {
-    public Guid UserId { get; set; }
+    public int UserId { get; set; }
 
     public string? LoginHash { get; set; }
 
