@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Server.App.Db.Contexts;
+namespace Server;
 
 public partial class Task
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
-    public Guid? WhoAdded { get; set; }
+    public int WhoAdded { get; set; }
 
-    public Guid? DesciplineId { get; set; }
+    public int DesciplineId { get; set; }
 
     public DateTime? Deadline { get; set; }
 
@@ -17,7 +17,7 @@ public partial class Task
 
     public string? Comment { get; set; }
 
-    public virtual Descipline? Descipline { get; set; }
+    public virtual Descipline Descipline { get; set; } = null!;
 
-    public virtual User? WhoAddedNavigation { get; set; }
+    public virtual User WhoAddedNavigation { get; set; } = null!;
 }

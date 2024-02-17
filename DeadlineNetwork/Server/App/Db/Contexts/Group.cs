@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Server.App.Db.Contexts;
+namespace Server;
 
 public partial class Group
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
     public string? Name { get; set; }
 
