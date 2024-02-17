@@ -1,12 +1,12 @@
 version: "3"
-#con_str : "User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=postgres;Pooling=true;Connection Lifetime=0;"
+#con_str : "User ID=postgres;Password=super_hard_4312_password_YAY;Host=localhost;Port=5433;Database=postgres;Pooling=true;Connection Lifetime=0;"
 services:
   postgres:
-    container_name: database
+    container_name: deadline_cat_db
     image: postgres
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres_vlad22
+      POSTGRES_PASSWORD: super_hard_4312_password_YAY
     volumes:
        - postgres:/data/postgres
        - ./init.sql:/docker-entrypoint-initdb.d/create_tables.sql
