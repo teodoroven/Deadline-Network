@@ -8,10 +8,11 @@ namespace Server.App.Controllers;
 [Route("discipline/[action]")]
 public class DisciplineCRUDController : ControllerBase
 {
-    public IApplicationDbContext Db { get; }
-    public DisciplineCRUDController(IApplicationDbContext db)
+    public ApplicationDbContext Db { get; }
+    public DisciplineCRUDController(ApplicationDbContext db)
     {
         Db = db;
+        
     }
 
     //TODO:

@@ -20,7 +20,6 @@ public static class AppInstance
         });
         
         if(EF.IsDesignTime) return;
-        services.AddScoped<IApplicationDbContext,ApplicationDbContext>();
     }
     public static WebApplicationBuilder CreateHostBuilder(string[] args){
         var builder = WebApplication.CreateBuilder(args);

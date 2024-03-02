@@ -4,17 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Server.App.Db.Contexts;
 
-public interface IApplicationDbContext{
-    DbSet<Discipline> Disciplines { get; set; }
-    DbSet<Group> Groups { get; set; }
-    DbSet<Task> Tasks { get; set; }
-    DbSet<User> Users { get; set; }
-    DbSet<UserCredential> UserCredentials { get; set; }
-    DbSet<UserGroup> UserGroups { get; set; }
-    Task<int> SaveChangesAsync();
-}
-
-public partial class ApplicationDbContext : DbContext, IApplicationDbContext
+public partial class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext()
     {
@@ -36,11 +26,6 @@ public partial class ApplicationDbContext : DbContext, IApplicationDbContext
     public virtual DbSet<UserCredential> UserCredentials { get; set; }
 
     public virtual DbSet<UserGroup> UserGroups { get; set; }
-
-    public Task<int> SaveChangesAsync()
-    {
-        return SaveChangesAsync(default);
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
