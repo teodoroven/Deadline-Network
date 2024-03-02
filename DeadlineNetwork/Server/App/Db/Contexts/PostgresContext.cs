@@ -4,17 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Server.App.Db.Contexts;
 
-public interface IApplicationDbContext{
-    DbSet<Discipline> Disciplines { get; set; }
-    DbSet<Group> Groups { get; set; }
-    DbSet<Task> Tasks { get; set; }
-    DbSet<User> Users { get; set; }
-    DbSet<UserCredential> UserCredentials { get; set; }
-    DbSet<UserGroup> UserGroups { get; set; }
-    Task<int> SaveChangesAsync();
-}
-
-public partial class ApplicationDbContext : DbContext, IApplicationDbContext
+public partial class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext()
     {
@@ -25,7 +15,7 @@ public partial class ApplicationDbContext : DbContext, IApplicationDbContext
     {
     }
 
-    public virtual DbSet<Discipline> Disciplines { get; set; }
+    public virtual DbSet<Descipline> Desciplines { get; set; }
 
     public virtual DbSet<Group> Groups { get; set; }
 
@@ -37,18 +27,13 @@ public partial class ApplicationDbContext : DbContext, IApplicationDbContext
 
     public virtual DbSet<UserGroup> UserGroups { get; set; }
 
-    public Task<int> SaveChangesAsync()
-    {
-        return SaveChangesAsync(default);
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Discipline>(entity =>
+        modelBuilder.Entity<Descipline>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("disciplines_pkey");
+            entity.HasKey(e => e.Id).HasName("desciplines_pkey");
 
-            entity.ToTable("disciplines");
+            entity.ToTable("desciplines");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Comment).HasColumnName("comment").IsRequired();
@@ -57,10 +42,10 @@ public partial class ApplicationDbContext : DbContext, IApplicationDbContext
                 .HasColumnName("group_id");
             entity.Property(e => e.Name).HasColumnName("name").IsRequired();
 
-            entity.HasOne(d => d.Group).WithMany(p => p.Disciplines)
+            entity.HasOne(d => d.Group).WithMany(p => p.Desciplines)
                 .HasForeignKey(d => d.GroupId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("disciplines_group_id_fkey");
+                .HasConstraintName("desciplines_group_id_fkey");
         });
 
         modelBuilder.Entity<Group>(entity =>
@@ -88,17 +73,17 @@ public partial class ApplicationDbContext : DbContext, IApplicationDbContext
             entity.Property(e => e.Deadline)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("deadline").IsRequired();
-            entity.Property(e => e.DisciplineId)
+            entity.Property(e => e.DesciplineId)
                 .ValueGeneratedOnAdd()
-                .HasColumnName("discipline_id");
+                .HasColumnName("descipline_id");
             entity.Property(e => e.WhoAdded)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("who_added");
 
-            entity.HasOne(d => d.Discipline).WithMany(p => p.Tasks)
-                .HasForeignKey(d => d.DisciplineId)
+            entity.HasOne(d => d.Descipline).WithMany(p => p.Tasks)
+                .HasForeignKey(d => d.DesciplineId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("tasks_discipline_id_fkey");
+                .HasConstraintName("tasks_descipline_id_fkey");
 
             entity.HasOne(d => d.WhoAddedNavigation).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.WhoAdded)

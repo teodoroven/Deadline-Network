@@ -11,5 +11,5 @@ public partial class Group
 
     public required string PasswordHash { get; set; }
 
-    public virtual ICollection<Discipline> Disciplines { get; set; } = new List<Discipline>();
+    public virtual ICollection<Descipline> Desciplines { get; set; } = new List<Descipline>();
 }

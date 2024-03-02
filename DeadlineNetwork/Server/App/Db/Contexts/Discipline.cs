@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Server;
 
-public partial class Discipline
+public partial class Descipline
 {
     public int Id { get; set; }
     public required string Name { get; set; }

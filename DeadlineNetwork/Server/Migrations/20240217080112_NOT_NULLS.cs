@@ -103,7 +103,7 @@ namespace Server.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "name",
-                table: "disciplines",
+                table: "desciplines",
                 type: "text",
                 nullable: false,
                 defaultValue: "",
@@ -113,7 +113,7 @@ namespace Server.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "comment",
-                table: "disciplines",
+                table: "desciplines",
                 type: "text",
                 nullable: false,
                 defaultValue: "",
@@ -200,7 +200,7 @@ namespace Server.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "name",
-                table: "disciplines",
+                table: "desciplines",
                 type: "text",
                 nullable: true,
                 oldClrType: typeof(string),
@@ -208,7 +208,7 @@ namespace Server.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "comment",
-                table: "disciplines",
+                table: "desciplines",
                 type: "text",
                 nullable: true,
                 oldClrType: typeof(string),

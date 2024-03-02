@@ -5,11 +5,11 @@ using Server.App.Db.Contexts;
 namespace Server.App.Controllers;
 
 [ApiController]
-[Route("discipline/[action]")]
-public class DisciplineCRUDController : ControllerBase
+[Route("descipline/[action]")]
+public class DesciplineCRUDController : ControllerBase
 {
-    public IApplicationDbContext Db { get; }
-    public DisciplineCRUDController(IApplicationDbContext db)
+    public ApplicationDbContext Db { get; }
+    public DesciplineCRUDController(ApplicationDbContext db)
     {
         Db = db;
     }
@@ -18,7 +18,7 @@ public class DisciplineCRUDController : ControllerBase
     // use JWT token for auth
     // add test to each case.
     [HttpGet(Name = "add")]
-    public async Task<JsonResult> Add(int userId, int groupId, string disciplineName, string comment = "")
+    public async Task<JsonResult> Add(int userId, int groupId, string desciplineName, string comment = "")
     {
         try
         {
@@ -30,24 +30,24 @@ public class DisciplineCRUDController : ControllerBase
                 };
             if (!userGroup.IsOwner)
             {
-                return new JsonResult("Only group owners can create disciplines")
+                return new JsonResult("Only group owners can create desciplines")
                 {
                     StatusCode = 403
                 };
             }
 
-            var discipline = new Discipline()
+            var descipline = new Descipline()
             {
                 GroupId = groupId,
-                Name = disciplineName,
+                Name = desciplineName,
                 Comment = comment
             };
 
-            await Db.Disciplines.AddAsync(discipline);
+            await Db.Desciplines.AddAsync(descipline);
             var changes = await Db.SaveChangesAsync();
             if (changes > 0)
             {
-                return new JsonResult(new { message = "Discipline created", discipline })
+                return new JsonResult(new { message = "Descipline created", descipline })
                 {
                     StatusCode = 200
                 };
@@ -55,7 +55,7 @@ public class DisciplineCRUDController : ControllerBase
         }
         catch
         {
-            return new JsonResult("Internal error /  failed to add discipline")
+            return new JsonResult("Internal error /  failed to add descipline")
             {
                 StatusCode=500
             };
