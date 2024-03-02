@@ -5,7 +5,7 @@ using Server.App.Db.Contexts;
 namespace Server.App.Controllers;
 
 [ApiController]
-[Route("data")]
+[Route("data/[action]")]
 public class DataAccessController : ControllerBase
 {
     public ApplicationDbContext Db { get; }
@@ -14,22 +14,13 @@ public class DataAccessController : ControllerBase
         Db = db;
     }
 
-    [HttpGet(Name = "Test")]
-    [Route("abc")]
-    public JsonResult Abc()
-    {
-        return new(new{Text="abc!"});
-    }
-
-    [HttpGet(Name = "Test")]
-    [Route("hello")]
+    [HttpGet(Name = "get")]
     public JsonResult Get()
     {
         return new(new{Text="Hello!"});
     }
 
     [HttpGet(Name = "users")]
-    [Route("users")]
     public JsonResult Users(){
         return new(new{Users=Db.Users.First()});
     }
