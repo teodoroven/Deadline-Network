@@ -33,7 +33,7 @@ jobs:
 
       # Builds the web api project
       - name: Build web api
-        run: dotnet build Server/Server.sln --configuration Release
+        run: dotnet build DeadlineNetwork/Server/Server.sln --configuration Release
 
       # Runs the tests project
       - name: Run tests
