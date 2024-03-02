@@ -5,20 +5,21 @@ using Server.App.Db.Contexts;
 namespace Server.App.Controllers;
 
 [ApiController]
-[Route("descipline/[action]")]
-public class DesciplineCRUDController : ControllerBase
+[Route("discipline/[action]")]
+public class DisciplineCRUDController : ControllerBase
 {
     public ApplicationDbContext Db { get; }
-    public DesciplineCRUDController(ApplicationDbContext db)
+    public DisciplineCRUDController(ApplicationDbContext db)
     {
         Db = db;
+        
     }
 
     //TODO:
     // use JWT token for auth
     // add test to each case.
     [HttpGet(Name = "add")]
-    public async Task<JsonResult> Add(int userId, int groupId, string desciplineName, string comment = "")
+    public async Task<JsonResult> Add(int userId, int groupId, string disciplineName, string comment = "")
     {
         try
         {
@@ -30,24 +31,24 @@ public class DesciplineCRUDController : ControllerBase
                 };
             if (!userGroup.IsOwner)
             {
-                return new JsonResult("Only group owners can create desciplines")
+                return new JsonResult("Only group owners can create disciplines")
                 {
                     StatusCode = 403
                 };
             }
 
-            var descipline = new Descipline()
+            var discipline = new Discipline()
             {
                 GroupId = groupId,
-                Name = desciplineName,
+                Name = disciplineName,
                 Comment = comment
             };
 
-            await Db.Desciplines.AddAsync(descipline);
+            await Db.Disciplines.AddAsync(discipline);
             var changes = await Db.SaveChangesAsync();
             if (changes > 0)
             {
-                return new JsonResult(new { message = "Descipline created", descipline })
+                return new JsonResult(new { message = "Discipline created", discipline })
                 {
                     StatusCode = 200
                 };
@@ -55,7 +56,7 @@ public class DesciplineCRUDController : ControllerBase
         }
         catch
         {
-            return new JsonResult("Internal error /  failed to add descipline")
+            return new JsonResult("Internal error /  failed to add discipline")
             {
                 StatusCode=500
             };

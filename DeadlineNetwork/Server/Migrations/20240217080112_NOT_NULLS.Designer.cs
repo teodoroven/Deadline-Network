@@ -25,7 +25,7 @@ namespace Server.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Server.Descipline", b =>
+            modelBuilder.Entity("Server.Discipline", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,11 +50,11 @@ namespace Server.Migrations
                         .HasColumnName("name");
 
                     b.HasKey("Id")
-                        .HasName("desciplines_pkey");
+                        .HasName("disciplines_pkey");
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("desciplines", (string)null);
+                    b.ToTable("disciplines", (string)null);
                 });
 
             modelBuilder.Entity("Server.Group", b =>
@@ -104,10 +104,10 @@ namespace Server.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("deadline");
 
-                    b.Property<int>("DesciplineId")
+                    b.Property<int>("DisciplineId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("descipline_id");
+                        .HasColumnName("discipline_id");
 
                     b.Property<int>("WhoAdded")
                         .ValueGeneratedOnAdd()
@@ -117,7 +117,7 @@ namespace Server.Migrations
                     b.HasKey("Id")
                         .HasName("tasks_pkey");
 
-                    b.HasIndex("DesciplineId");
+                    b.HasIndex("DisciplineId");
 
                     b.HasIndex("WhoAdded");
 
@@ -192,24 +192,24 @@ namespace Server.Migrations
                     b.ToTable("user_group", (string)null);
                 });
 
-            modelBuilder.Entity("Server.Descipline", b =>
+            modelBuilder.Entity("Server.Discipline", b =>
                 {
                     b.HasOne("Server.Group", "Group")
-                        .WithMany("Desciplines")
+                        .WithMany("Disciplines")
                         .HasForeignKey("GroupId")
                         .IsRequired()
-                        .HasConstraintName("desciplines_group_id_fkey");
+                        .HasConstraintName("disciplines_group_id_fkey");
 
                     b.Navigation("Group");
                 });
 
             modelBuilder.Entity("Server.Task", b =>
                 {
-                    b.HasOne("Server.Descipline", "Descipline")
+                    b.HasOne("Server.Discipline", "Discipline")
                         .WithMany("Tasks")
-                        .HasForeignKey("DesciplineId")
+                        .HasForeignKey("DisciplineId")
                         .IsRequired()
-                        .HasConstraintName("tasks_descipline_id_fkey");
+                        .HasConstraintName("tasks_discipline_id_fkey");
 
                     b.HasOne("Server.User", "WhoAddedNavigation")
                         .WithMany("Tasks")
@@ -217,7 +217,7 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasConstraintName("tasks_who_added_fkey");
 
-                    b.Navigation("Descipline");
+                    b.Navigation("Discipline");
 
                     b.Navigation("WhoAddedNavigation");
                 });
@@ -252,14 +252,14 @@ namespace Server.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Server.Descipline", b =>
+            modelBuilder.Entity("Server.Discipline", b =>
                 {
                     b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("Server.Group", b =>
                 {
-                    b.Navigation("Desciplines");
+                    b.Navigation("Disciplines");
                 });
 
             modelBuilder.Entity("Server.User", b =>

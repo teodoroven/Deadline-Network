@@ -15,7 +15,7 @@ public partial class ApplicationDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Descipline> Desciplines { get; set; }
+    public virtual DbSet<Discipline> Disciplines { get; set; }
 
     public virtual DbSet<Group> Groups { get; set; }
 
@@ -29,11 +29,11 @@ public partial class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Descipline>(entity =>
+        modelBuilder.Entity<Discipline>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("desciplines_pkey");
+            entity.HasKey(e => e.Id).HasName("disciplines_pkey");
 
-            entity.ToTable("desciplines");
+            entity.ToTable("disciplines");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Comment).HasColumnName("comment").IsRequired();
@@ -42,10 +42,10 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnName("group_id");
             entity.Property(e => e.Name).HasColumnName("name").IsRequired();
 
-            entity.HasOne(d => d.Group).WithMany(p => p.Desciplines)
+            entity.HasOne(d => d.Group).WithMany(p => p.Disciplines)
                 .HasForeignKey(d => d.GroupId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("desciplines_group_id_fkey");
+                .HasConstraintName("disciplines_group_id_fkey");
         });
 
         modelBuilder.Entity<Group>(entity =>
@@ -73,17 +73,17 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Deadline)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("deadline").IsRequired();
-            entity.Property(e => e.DesciplineId)
+            entity.Property(e => e.DisciplineId)
                 .ValueGeneratedOnAdd()
-                .HasColumnName("descipline_id");
+                .HasColumnName("discipline_id");
             entity.Property(e => e.WhoAdded)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("who_added");
 
-            entity.HasOne(d => d.Descipline).WithMany(p => p.Tasks)
-                .HasForeignKey(d => d.DesciplineId)
+            entity.HasOne(d => d.Discipline).WithMany(p => p.Tasks)
+                .HasForeignKey(d => d.DisciplineId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("tasks_descipline_id_fkey");
+                .HasConstraintName("tasks_discipline_id_fkey");
 
             entity.HasOne(d => d.WhoAddedNavigation).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.WhoAdded)

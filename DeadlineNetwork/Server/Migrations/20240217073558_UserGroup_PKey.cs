@@ -40,7 +40,7 @@ namespace Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "desciplines",
+                name: "disciplines",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -51,9 +51,9 @@ namespace Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("desciplines_pkey", x => x.id);
+                    table.PrimaryKey("disciplines_pkey", x => x.id);
                     table.ForeignKey(
-                        name: "desciplines_group_id_fkey",
+                        name: "disciplines_group_id_fkey",
                         column: x => x.group_id,
                         principalTable: "groups",
                         principalColumn: "id");
@@ -107,7 +107,7 @@ namespace Server.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     who_added = table.Column<int>(type: "integer", nullable: false),
-                    descipline_id = table.Column<int>(type: "integer", nullable: false),
+                    discipline_id = table.Column<int>(type: "integer", nullable: false),
                     deadline = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     created = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     comment = table.Column<string>(type: "text", nullable: true)
@@ -116,9 +116,9 @@ namespace Server.Migrations
                 {
                     table.PrimaryKey("tasks_pkey", x => x.id);
                     table.ForeignKey(
-                        name: "tasks_descipline_id_fkey",
-                        column: x => x.descipline_id,
-                        principalTable: "desciplines",
+                        name: "tasks_discipline_id_fkey",
+                        column: x => x.discipline_id,
+                        principalTable: "disciplines",
                         principalColumn: "id");
                     table.ForeignKey(
                         name: "tasks_who_added_fkey",
@@ -128,14 +128,14 @@ namespace Server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_desciplines_group_id",
-                table: "desciplines",
+                name: "IX_disciplines_group_id",
+                table: "disciplines",
                 column: "group_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tasks_descipline_id",
+                name: "IX_tasks_discipline_id",
                 table: "tasks",
-                column: "descipline_id");
+                column: "discipline_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_tasks_who_added",
@@ -161,7 +161,7 @@ namespace Server.Migrations
                 name: "user_group");
 
             migrationBuilder.DropTable(
-                name: "desciplines");
+                name: "disciplines");
 
             migrationBuilder.DropTable(
                 name: "users");
