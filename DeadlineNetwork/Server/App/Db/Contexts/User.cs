@@ -7,10 +7,10 @@ public partial class User
 {
     public int Id { get; set; }
 
-    //TODO: fix model not null
     public required string Name { get; set; }
 
-    public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
+    public required string LoginHash { get; set; }
 
-    public virtual UserCredential? UserCredential { get; set; }
+    public required string PasswordHash { get; set; }
+    public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
 }

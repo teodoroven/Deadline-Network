@@ -23,7 +23,6 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    public virtual DbSet<UserCredential> UserCredentials { get; set; }
 
     public virtual DbSet<UserGroup> UserGroups { get; set; }
 
@@ -98,30 +97,13 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("users");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.PasswordHash).HasColumnName("password_hash");
+            entity.Property(e => e.LoginHash).HasColumnName("login_hash");
             entity.Property(e => e.Name)
                 .HasColumnName("name")
                 .IsRequired();
         });
 
-        modelBuilder.Entity<UserCredential>(entity =>
-        {
-            entity.HasKey(e => e.UserId).HasName("user_credentials_pkey");
-
-            entity.ToTable("user_credentials");
-
-            entity.Property(e => e.UserId)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("user_id");
-            entity.Property(e => e.LoginHash).HasColumnName("login_hash")
-                .IsRequired();
-            entity.Property(e => e.PasswordHash).HasColumnName("password_hash")
-                .IsRequired();
-
-            entity.HasOne(d => d.User).WithOne(p => p.UserCredential)
-                .HasForeignKey<UserCredential>(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("user_credentials_user_id_fkey");
-        });
 
         modelBuilder.Entity<UserGroup>(entity =>
         {

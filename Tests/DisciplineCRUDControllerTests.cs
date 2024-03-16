@@ -22,17 +22,23 @@ public class DisciplineCRUDControllerTests
         _db.Users.Add(new Server.User
         {
             Name = "vlad",
-            Id = 1
+            Id = 1,
+            LoginHash="",
+            PasswordHash=""
         });
         _db.Users.Add(new Server.User
         {
             Name = "dima",
-            Id = 2
+            Id = 2,
+            LoginHash="",
+            PasswordHash=""
         });
         _db.Users.Add(new Server.User
         {
             Name = "sasha",
-            Id = 3
+            Id = 3,
+            LoginHash="",
+            PasswordHash=""
         });
 
         _db.Groups.Add(new Server.Group{

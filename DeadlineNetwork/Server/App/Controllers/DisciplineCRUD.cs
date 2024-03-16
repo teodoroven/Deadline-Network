@@ -66,6 +66,4 @@ public class DisciplineCRUDController : ControllerBase
             StatusCode=500
         };
     }
-
-
 }
