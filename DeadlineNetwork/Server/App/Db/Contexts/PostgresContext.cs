@@ -97,8 +97,9 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("users");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.PasswordHash).HasColumnName("password_hash");
-            entity.Property(e => e.LoginHash).HasColumnName("login_hash");
+            entity.Property(e => e.PasswordHash).HasColumnName("password_hash").IsRequired();
+            entity.Property(e => e.LoginHash).HasColumnName("login_hash").IsRequired();
+            entity.HasIndex(e=>e.LoginHash).IsUnique();
             entity.Property(e => e.Name)
                 .HasColumnName("name")
                 .IsRequired();
