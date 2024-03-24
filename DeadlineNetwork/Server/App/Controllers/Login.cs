@@ -33,12 +33,12 @@ public class LoginService : ILogin
     {
         string loginHash = hashService.Hash(login);
         string passwordHash = hashService.Hash(password);
-        var user = db.Users.Where(p => p.PasswordHash == passwordHash && p.LoginHash == loginHash).First();
-        if (user is null)
-            throw new Exception("There is no user with such password or login");
+        var user = db.Users.Where(p => p.PasswordHash == passwordHash && p.LoginHash == loginHash);
+        if (user.Count() == 0)
+            throw new ArgumentException("There is no user with such password or login");
         else
         {
-            return user;
+            return user.First();
         }
     }
 }

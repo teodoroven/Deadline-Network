@@ -29,9 +29,9 @@ public class RegistrationService : IRegister
     {
         string loginHash = hashService.Hash(login);
         string passwordHash = hashService.Hash(password);
-        var userExist = Db.Users.Where(p => p.LoginHash == loginHash).First();
-        if (userExist is not null)
-            throw new Exception("User with this login is already exists");
+        var userExist = Db.Users.Where(p => p.LoginHash == loginHash);
+        if (userExist.Count() > 0)
+            throw new ArgumentException("User with this login is already exists");
         var user = new User
         {
             Name = userName,

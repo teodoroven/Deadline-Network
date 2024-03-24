@@ -31,20 +31,19 @@ public class JoinGroup : IJoinGroup
     {
         var user = await Db.Users.FindAsync(userId);
         if (user is null)
-            throw new Exception("No such user");
+            throw new ArgumentException("No such user");
 
         var group = await Db.Groups.FindAsync(groupId);
         if (group is null)
-            throw new Exception("No such group");
+            throw new ArgumentException("No such group");
         
         var userGroup = await Db.UserGroups.FindAsync(userId, groupId);
         if (userGroup is not null)
-            throw new Exception("User already in group");
-        
+            throw new ArgumentException("User already in group");
         
         string groupPasswordHash = hashService.Hash(groupPassword);
         if (group.PasswordHash != groupPasswordHash)
-            throw new Exception("Wrong password");
+            throw new ArgumentException("Wrong password");
         
         var newUserGroup = new UserGroup()
         {
