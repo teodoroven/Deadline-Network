@@ -24,21 +24,24 @@ public class DisciplineCRUDControllerTests
             Name = "vlad",
             Id = 1,
             LoginHash="",
-            PasswordHash=""
+            PasswordHash="",
+            PasswordSalt=HashService.GenerateSalt()
         });
         _db.Users.Add(new Server.User
         {
             Name = "dima",
             Id = 2,
             LoginHash="",
-            PasswordHash=""
+            PasswordHash="",
+            PasswordSalt=HashService.GenerateSalt()
         });
         _db.Users.Add(new Server.User
         {
             Name = "sasha",
             Id = 3,
             LoginHash="",
-            PasswordHash=""
+            PasswordHash="",
+            PasswordSalt=HashService.GenerateSalt()
         });
 
         _db.Groups.Add(new Server.Group{
