@@ -1,20 +1,5 @@
-using Server;
 using Server.App.Db.Contexts;
-
-public interface IRegister{
-    /// <summary>
-    /// Принимая на вход логин, пароль и имя
-    /// хеширует логин и пароль
-    /// Проверяет существование логина в базе данных
-    /// Если логин есть, кидает Exception
-    /// Создает новый объект User с полученными данными
-    /// Добавляет созданный юзер в бд
-    /// Возврашает созданный объект
-    /// </summary>
-    Task<User> Register(string login, string password, string name);
-}
-
-
+namespace Server.App.Services;
 public class RegistrationService : IRegister
 {
     public ApplicationDbContext Db { get; }
@@ -29,14 +14,15 @@ public class RegistrationService : IRegister
     {
         string loginHash = hashService.Hash(login);
         string passwordHash = hashService.Hash(password);
-        var userExist = Db.Users.Where(p => p.LoginHash == loginHash);
-        if (userExist.Count() > 0)
+        var userExist = Db.Users.FirstOrDefault(p => p.LoginHash == loginHash);
+        if (userExist is not null)
             throw new ArgumentException("User with this login is already exists");
         var user = new User
         {
             Name = userName,
             PasswordHash = passwordHash,
-            LoginHash = loginHash
+            LoginHash = loginHash,
+            PasswordSalt=HashService.GenerateSalt()
         };
 
         await Db.Users.AddAsync(user);

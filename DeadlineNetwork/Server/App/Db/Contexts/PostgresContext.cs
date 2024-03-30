@@ -98,6 +98,7 @@ public partial class ApplicationDbContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.PasswordHash).HasColumnName("password_hash").IsRequired();
+            entity.Property(e => e.PasswordSalt).HasColumnName("password_salt").IsRequired();
             entity.Property(e => e.LoginHash).HasColumnName("login_hash").IsRequired();
             entity.HasIndex(e=>e.LoginHash).IsUnique();
             entity.Property(e => e.Name)
