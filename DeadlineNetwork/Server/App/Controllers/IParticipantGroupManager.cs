@@ -64,11 +64,12 @@ public class ParticipantGroupManager : IParticipantGroupManager
     public Group Group { get; }
     public User GroupOwner { get; }
 
-    public ParticipantGroupManager(ApplicationDbContext db, User participant, Group group)
+    public ParticipantGroupManager(ApplicationDbContext db, User participant, Group group, User groupOwner)
     {
         Db = db;
         Participant = participant;
         Group = group;
+        GroupOwner = groupOwner;
     }
 
     // Получает дисциплины для данной группы
