@@ -24,14 +24,16 @@ namespace Tests
             // Подготовка
             var db = GetInMemoryDbContext();
             var user = new User { Id = 1, Name = "Тестовый пользователь", PasswordSalt = new byte[0], LoginHash = "", PasswordHash = "" };
+            var groupOwner = new User { Id = 2, Name = "Владелец группы", PasswordSalt = new byte[0], LoginHash = "", PasswordHash = "" };
             var group = new Group { Id = 1, Name = "Тестовая группа", PasswordHash = "" };
             var discipline = new Discipline { Id = 1, GroupId = 1, Name = "Тестовая дисциплина" }; // Ensure the discipline is added
             db.Users.Add(user);
+            db.Users.Add(groupOwner);
             db.Groups.Add(group);
             db.Disciplines.Add(discipline); // Add this line
             db.SaveChanges();
 
-            var manager = new ParticipantGroupManager(db, user, group);
+            var manager = new ParticipantGroupManager(db, user, group, groupOwner);
 
             int disciplineId = 1;
             string description = "Тестовое описание задачи";
@@ -53,14 +55,16 @@ namespace Tests
         {
             var db = GetInMemoryDbContext();
             var user = new User { Id = 1, Name = "Тестовый пользователь", PasswordSalt = new byte[0], LoginHash = "", PasswordHash = "" };
+            var groupOwner = new User { Id = 2, Name = "Владелец группы", PasswordSalt = new byte[0], LoginHash = "", PasswordHash = "" };
             var group = new Group { Id = 1, Name = "Тестовая группа", PasswordHash = "" };
             db.Users.Add(user);
+            db.Users.Add(groupOwner);
             db.Groups.Add(group);
             var testDiscipline = new Discipline { GroupId = 1, Name = "Тестовая дисциплина" };
             db.Disciplines.Add(testDiscipline);
             db.SaveChanges();
 
-            var manager = new ParticipantGroupManager(db, user, group);
+            var manager = new ParticipantGroupManager(db, user, group, groupOwner);
 
             var disciplines = manager.GetDisciplines(group.Id).ToList();
 
@@ -73,14 +77,16 @@ namespace Tests
         {
             var db = GetInMemoryDbContext();
             var user = new User { Id = 1, Name = "Тестовый пользователь", PasswordSalt = new byte[0], LoginHash = "", PasswordHash = "" };
+            var groupOwner = new User { Id = 2, Name = "Владелец группы", PasswordSalt = new byte[0], LoginHash = "", PasswordHash = "" };
             var group = new Group { Id = 1, Name = "Тестовая группа", PasswordHash = "" };
             db.Users.Add(user);
+            db.Users.Add(groupOwner);
             db.Groups.Add(group);
             var testTask = new Server.Task { DisciplineId = 1, Comment = "Комментарий", Deadline = DateTime.UtcNow.AddDays(1), WhoAdded = 1 };
             db.Tasks.Add(testTask);
             db.SaveChanges();
 
-            var manager = new ParticipantGroupManager(db, user, group);
+            var manager = new ParticipantGroupManager(db, user, group, groupOwner);
 
             string updatedDescription = "Обновленное описание";
             string updatedComment = "Обновленный комментарий";
