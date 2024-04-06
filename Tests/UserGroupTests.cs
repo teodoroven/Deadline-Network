@@ -3,7 +3,6 @@ using Server.App.Db.Contexts;
 using Server;
 
 namespace Tests;
-// Hello f*ckig world
 public class UserGroupManagerTests : IClassFixture<DatabaseFixure>
 {
     DatabaseFixure fixure;
